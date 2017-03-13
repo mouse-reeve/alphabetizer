@@ -1,31 +1,21 @@
 ''' Sorts the characters in a block of text alphabetically '''
+import argparse
 
 def alphabetize(text):
     ''' performs alphabetization '''
-    letters = [l for l in list(text) if l.isalpha()]
-    sorted_letters = sort(letters)
+    caps = [l.lower() != l for l in text]
+    fixed = [(i, l) for (i, l) in enumerate(text) if not l.isalpha()]
+    letters = sorted([l for l in text.lower() if l.isalpha()])
 
-    text = list(text)
-    index = 0
-    while index < len(text):
-        if text[index].isalpha():
-            text[index] = sorted_letters.pop(0)
-        index += 1
+    [letters.insert(i, l) for (i, l) in fixed]
 
-    return ''.join(text)
+    return ''.join(l.upper() if cap else l for (l, cap) in zip(letters, caps))
 
 
-def sort(alpha_list):
-    ''' orders a list of letters (mixed case) '''
-    swapped = True
-    while swapped:
-        swapped = False
-        i = 0
-        while i < len(alpha_list) - 1:
-            if alpha_list[i].lower() > alpha_list[i + 1].lower():
-                tmp = alpha_list[i]
-                alpha_list[i] = alpha_list[i + 1]
-                alpha_list[i + 1] = tmp
-                swapped = True
-            i += 1
-    return alpha_list
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='alphabetize letters in text')
+    parser.add_argument('text', type=str)
+
+    args = parser.parse_args()
+
+    print alphabetize(args.text)
