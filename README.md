@@ -1,4 +1,7 @@
 # Alphabetizer
-Sorts text, leaving non-alpha characters in place.
+Sorts text, leaving non-alpha characters in place.  
 
-aaaaa accc, eeeeghh iil-llnnn noopprrrSs st tttvx.
+```python
+$ python alphabetizer.py 'Sorts text, leaving non-alpha characters in place.'
+Aaaaa accc, eeeeghh iil-llnnn noopprrrss st tttvx.
+```
