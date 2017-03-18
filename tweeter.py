@@ -8,7 +8,8 @@ api = TwitterAPI(settings.API_KEY,
                  settings.ACCESS_TOKEN,
                  settings.ACCESS_SECRET)
 
-stream = api.request('statuses/filter', {'track': 'alphabetize'})
+stream = api.request('statuses/filter',
+                     {'track': 'alphabetize,alphabetizer,alphabetized'})
 
 for item in stream.get_iterator():
     if 'text' in item and not item['user']['screen_name'] == 'alphabotizer':
