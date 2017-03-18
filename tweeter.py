@@ -12,11 +12,16 @@ variants = ['alphabetiz', 'alphabetis']
 endings = ['e', 'ing', 'ed', 'er', 'es']
 track = ','.join(v+e for v in variants for e in endings)
 
+already_responded = [l for l in open('tweet_log').readlines()]
+already_responded = already_responded + [None] * (20 - len(already_responded))
 stream = api.request('statuses/filter', {'track': track})
 
 for item in stream.get_iterator():
     try:
-        if 'text' in item and not item['user']['screen_name'] == 'alphabotizer':
+        if item['id'] in already_responded or \
+           item['user']['screen_name'] == 'alphabotizer':
+            continue
+        if 'text' in item:
             print '--- I found a tweet! ---'
             text = item['text']
             print text
@@ -35,5 +40,9 @@ for item in stream.get_iterator():
             if resp.status_code != 200:
                 print resp.text
             print '\n\n\n'
+            already_responded = [tweet_id] + already_responded[:-1]
+            f = open('tweet_log', 'w')
+            f.write('\n'.join(str(i) for i in already_responded))
+            f.close()
     except Exception as oops:
         print oops
